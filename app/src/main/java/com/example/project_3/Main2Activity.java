@@ -29,12 +29,17 @@ import com.google.android.material.tabs.TabLayout;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Main2Activity extends AppCompatActivity {
     static final int THREAD_HANDLER_SUCCESS_INFO = 1;
     static String Weather;
     static int w_type;
+    static ArrayList<clothes> clothes_list;
 
     private ViewPager viewPager;
     private LocationManager locationManager;
@@ -64,6 +69,8 @@ public class Main2Activity extends AppCompatActivity {
 
         pagerAdapter = new PageAdapter(getSupportFragmentManager(), tablayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
+
+        clothes_list = new ArrayList<>();
 
         //tablayout.setTabTextColors(Color.parseColor("#FFFFFF"), Color.parseColor("#FFFFFF"));
 
@@ -142,6 +149,16 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     private void do_work() {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        try {
+            jsonObject.put("id", SignupActivity.user_id);
+            jsonArray.put(jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new JSONTask(jsonArray).execute("get_clothes");
+
         locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 
         try {

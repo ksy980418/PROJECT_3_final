@@ -1,5 +1,7 @@
 package com.example.project_3;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
@@ -15,6 +17,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class JSONTask extends AsyncTask<String, String ,String > {
     private JSONArray jsonArray;
@@ -111,6 +115,28 @@ public class JSONTask extends AsyncTask<String, String ,String > {
                     e.printStackTrace();
                 }
                 break;
+            case "get_clothes" :
+                Main2Activity.clothes_list.clear();
+                JSONArray jsonArray;
+                try {
+                    jsonArray = new JSONArray(result);
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            clothes c = new clothes(byteArray2Bitmap((byte [])jsonArray.getJSONObject(i).get("_cloth_image"))
+                                    , jsonArray.getJSONObject(i).getString("_group1")
+                                    , jsonArray.getJSONObject(i).getString("_group2"));
+                            Main2Activity.clothes_list.add(c);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
     }
+
+    private Bitmap byteArray2Bitmap(byte[] bytes) {return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);}
 }
