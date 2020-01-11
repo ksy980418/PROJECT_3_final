@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -52,6 +53,8 @@ public class SignupActivity extends AppCompatActivity {
 
     private ImageView profile;
     private String profile_img;
+    private RadioButton male;
+    private RadioButton female;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -80,6 +83,9 @@ public class SignupActivity extends AppCompatActivity {
 
         RadioGroup radioGroup = findViewById(R.id.sex);
 
+        male = findViewById(R.id.male);
+        female = findViewById(R.id.female);
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -106,7 +112,8 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(name_text.getText())
                         && !TextUtils.isEmpty(email_text.getText())
-                        && !TextUtils.isEmpty(age_text.getText())) {
+                        && !TextUtils.isEmpty(age_text.getText())
+                        && (male.isChecked() || female.isChecked())) {
                     nickname = name_text.getText().toString();
                     email = email_text.getText().toString();
                     age = Integer.parseInt(age_text.getText().toString());
