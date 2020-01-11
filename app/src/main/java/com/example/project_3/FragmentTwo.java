@@ -29,12 +29,11 @@ import java.io.InputStream;
 public class FragmentTwo extends Fragment {
     private static final int PICK_FROM_ALBUM = 1;
     private static final int CAPTURE_IMAGE = 2;
+    private static final int CLOTHES_ADD = 3;
 
     private FloatingActionButton fab_main, fab_sub1, fab_sub2;
     private Animation fab_open, fab_close;
     private boolean isFabOpen = false;
-
-    private ImageView imageView;
 
     static Bitmap cur_image;
 
@@ -42,8 +41,6 @@ public class FragmentTwo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view2 = inflater.inflate(R.layout.tab2 , container, false);
-
-        imageView = view2.findViewById(R.id.get_image);
 
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
@@ -101,6 +98,9 @@ public class FragmentTwo extends Fragment {
                     InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
                     cur_image = BitmapFactory.decodeStream(inputStream);
                     inputStream.close();
+
+                    Intent intent = new Intent(getContext(), ClothesAddActivity.class);
+                    startActivityForResult(intent, CLOTHES_ADD);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -114,7 +114,13 @@ public class FragmentTwo extends Fragment {
             }
             else {
                 cur_image = (Bitmap) data.getExtras().get("data");
+
+                Intent intent = new Intent(getContext(), ClothesAddActivity.class);
+                startActivityForResult(intent, CLOTHES_ADD);
             }
+        }
+        else if (requestCode == CLOTHES_ADD) {
+
         }
     }
 
