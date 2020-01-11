@@ -22,6 +22,7 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
+        <activity android:name=".SignupActivity"/>
         <activity android:name=".Main2Activity"/>
         <activity android:name=".MainActivity">
             <intent-filter>

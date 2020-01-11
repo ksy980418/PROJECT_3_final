@@ -241,7 +241,7 @@ public class Main2Activity extends AppCompatActivity {
                 }).show();
     }
 
-    public Handler handler = new Handler(){
+    public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

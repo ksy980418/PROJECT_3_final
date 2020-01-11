@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
-        Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-        startActivity(intent);
     }
 
     @Override
@@ -65,34 +63,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void redirectSignupActivity() {
-        final Intent intent = new Intent(this,
-                MainActivity.class);
+        final Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    //로그아웃
-    private void onClickLogout() {
-        UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
-            @Override
-            public void onCompleteLogout() {
-                redirectLoginActivity();
-            }
-        });
-    }
-
-    //로그인 화면에 다시 연결
-    protected void redirectLoginActivity() {
-        final Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
-
-
-    private void redirectMainActivity() {
-        Intent intent = new Intent(this, Main2Activity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
     }
 
     private class SessionCallback implements ISessionCallback {
@@ -100,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         //로그인 성공한 상태
         @Override
         public void onSessionOpened() {
-            requestMe();
+            redirectSignupActivity();
         }
 
         //로그인 실패한 상태
@@ -108,49 +81,5 @@ public class MainActivity extends AppCompatActivity {
         public void onSessionOpenFailed(KakaoException exception) {
             Log.e("SessionCallback :: ", "onSessionOpenFailed : " + exception.getMessage());
         }
-
-        //사용자 정보요청
-        private void requestMe() {
-            List<String> keys = new ArrayList<>();
-            keys.add("properties.nickname");
-            keys.add("properties.profile_image");
-            keys.add("kakao_account.email");
-
-
-            UserManagement.getInstance().me(keys, new MeV2ResponseCallback() {
-                @Override
-                public void onFailure(ErrorResult errorResult) {
-                    String message = "failed to get user info. msg=" + errorResult;
-                    Logger.d(message);
-                }
-
-                @Override
-                public void onSessionClosed(ErrorResult errorResult) {
-                    //redirectLoginActivity();
-                    Log.e("SessionCallback :: ", "onSessionClosed : " + errorResult.getErrorMessage());
-                }
-
-                @Override
-                public void onSuccess(MeV2Response response) {
-                    Log.e("SessionCallback :: ", "onSuccess");
-                    Logger.d("user id : " + response.getId());
-                    Logger.d("email: " + response.getKakaoAccount().getEmail());
-                    String email =response.getKakaoAccount().getEmail();
-
-                    redirectMainActivity();
-                }
-                /*
-                @Override
-                public void onNotSignedUp() {
-                    Log.e("SessionCallback :: ", "onNotSignedUp");
-                }
-                */
-
-            });
-        }
-
-
-
-
     }
 }

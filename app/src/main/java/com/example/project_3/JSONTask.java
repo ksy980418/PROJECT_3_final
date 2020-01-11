@@ -1,9 +1,6 @@
 package com.example.project_3;
 
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,19 +15,14 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class JSONTask extends AsyncTask<String, String ,String > {
     private JSONArray jsonArray;
-    private JSONObject jsonObject;
     private final String server = "http://192.168.0.78:80/";
     private String process;
 
-    public JSONTask(JSONArray _jsonArray, JSONObject _jsonobject) {
+    public JSONTask(JSONArray _jsonArray) {
         jsonArray = _jsonArray;
-        jsonObject = _jsonobject;
     }
 
     @Override
@@ -54,11 +46,7 @@ public class JSONTask extends AsyncTask<String, String ,String > {
 
                 OutputStream outStream = con.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-                if (!process.equals("contact_sync")) {
-                    writer.write(jsonObject.toString());
-                }else {
-                    writer.write(jsonArray.toString());
-                }
+                writer.write(jsonArray.toString());
                 writer.flush();
                 writer.close();
 
@@ -98,6 +86,31 @@ public class JSONTask extends AsyncTask<String, String ,String > {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-
+        switch (process) {
+            case "login_try" :
+                JSONObject json1;
+                try {
+                    json1 = new JSONObject(result);
+                    if (json1.getBoolean("result"))
+                        SignupActivity.s_this.handler.sendEmptyMessage(2);
+                    else
+                        SignupActivity.s_this.handler.sendEmptyMessage(3);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "signed_up" :
+                JSONObject json2;
+                try {
+                    json2 = new JSONObject(result);
+                    if (json2.getBoolean("result"))
+                        SignupActivity.s_this.handler.sendEmptyMessage(3);
+                    else
+                        SignupActivity.s_this.handler.sendEmptyMessage(2);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
     }
 }
