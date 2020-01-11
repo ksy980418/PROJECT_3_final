@@ -95,15 +95,7 @@ public class SignupActivity extends AppCompatActivity {
         new Thread() {
             @Override
             public void run() {
-                /*if (profile_img == null) {
-                    Log.e("thread", "1");
-                    img = ((BitmapDrawable)getResources().getDrawable(R.drawable.ic_profile_121261)).getBitmap();
-                }
-                else {*/
-                    //Log.e("thread", "2");
-                    img = getBitmap(profile_img);
-                //}
-                System.out.println(img);
+                img = getBitmap(profile_img);
                 handler.sendEmptyMessage(1);
             }
         }.start();
@@ -123,7 +115,8 @@ public class SignupActivity extends AppCompatActivity {
                     jsonObject.put("email", email);
                     jsonObject.put("age", age);
                     jsonObject.put("is_male", is_male);
-                    jsonObject.put("profile_img", bitmap2ByteArray(img));
+                    if (img != null)
+                        jsonObject.put("profile_img", bitmap2ByteArray(img));
                     jsonArray.put(jsonObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -136,8 +129,12 @@ public class SignupActivity extends AppCompatActivity {
     public Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
-            if (msg.what == 1)
-                profile.setImageBitmap(img);
+            if (msg.what == 1) {
+                if (img != null)
+                    profile.setImageBitmap(img);
+                else
+                    profile.setImageResource(R.drawable.ic_profile_121261);
+            }
             else if (msg.what == 2) {
                 showSignup();
             }
@@ -193,13 +190,6 @@ public class SignupActivity extends AppCompatActivity {
                 nickname = result.getNickname();
                 email = result.getKakaoAccount().getEmail();
                 profile_img = result.getProfileImagePath();
-
-                if (profile_img == null)
-                    System.out.println("1. profile image : " + profile_img);
-                else if (profile_img == "null")
-                    System.out.println("2. profile image : " + profile_img);
-                else
-                    System.out.println("3. profile image : " + profile_img);
 
                 JSONObject jsonObject = new JSONObject();
                 JSONArray jsonArray = new JSONArray();
