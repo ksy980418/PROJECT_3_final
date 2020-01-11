@@ -1,33 +1,49 @@
 package com.example.project_3;
 
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FragmentTwo extends Fragment {
+    private static final int PICK_FROM_ALBUM = 1;
+    private static final int CAPTURE_IMAGE = 2;
 
     private FloatingActionButton fab_main, fab_sub1, fab_sub2;
-
     private Animation fab_open, fab_close;
-
     private boolean isFabOpen = false;
+
+    private ImageView imageView;
+
+    static Bitmap cur_image;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view2 = inflater.inflate(R.layout.tab2 , container, false);
+
+        imageView = view2.findViewById(R.id.get_image);
 
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
@@ -52,15 +68,55 @@ public class FragmentTwo extends Fragment {
                     break;
                 case R.id.fab_sub1:
                     toggleFab();
-                    Toast.makeText(getContext(), "Camera Open-!", Toast.LENGTH_SHORT).show();
+                    gp_camera();
                     break;
                 case R.id.fab_sub2:
                     toggleFab();
-                    Toast.makeText(getContext(), "Album Open-!", Toast.LENGTH_SHORT).show();
+                    go_album();
                     break;
             }
         }
     };
+
+    private void go_album() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_FROM_ALBUM);
+    }
+
+    private void gp_camera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAPTURE_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == PICK_FROM_ALBUM) {
+            if (resultCode != Activity.RESULT_OK) {
+                Toast.makeText(getContext(), "ALBUM CANCEL" ,Toast.LENGTH_SHORT).show();
+            }
+            else {
+                try {
+                    InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+                    cur_image = BitmapFactory.decodeStream(inputStream);
+                    inputStream.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if (requestCode == CAPTURE_IMAGE) {
+            if (resultCode != Activity.RESULT_OK) {
+                Toast.makeText(getContext(), "CAMERA CANCEL" ,Toast.LENGTH_SHORT).show();
+            }
+            else {
+                cur_image = (Bitmap) data.getExtras().get("data");
+            }
+        }
+    }
 
     private void toggleFab() {
         if (isFabOpen) {

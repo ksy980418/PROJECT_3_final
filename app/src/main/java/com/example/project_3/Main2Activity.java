@@ -104,6 +104,11 @@ public class Main2Activity extends AppCompatActivity {
                 Toast.makeText(this, "We need your permission for reading your gallery.", Toast.LENGTH_SHORT).show();
             permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA))
+                Toast.makeText(this, "We need your permission for reading your gallery.", Toast.LENGTH_SHORT).show();
+            permissions.add(Manifest.permission.CAMERA);
+        }
         if (permissions.size() > 0) {
             String[] per_array = new String[permissions.size()];
             per_array = permissions.toArray(per_array);
@@ -142,6 +147,11 @@ public class Main2Activity extends AppCompatActivity {
             }else if (grantResults.length == 2
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                do_work();
+            }else if (grantResults.length == 3
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 do_work();
             }else
                 finish();

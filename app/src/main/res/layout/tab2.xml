@@ -1,50 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_sub1"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/fab_sub2"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginRight="20dp"
-        android:backgroundTint="#ffffff"
-        android:src="@drawable/ic_camera"
-        android:visibility="invisible"
-        app:borderWidth="0dp"
-        app:fabSize="normal" />
+        android:id="@+id/get_image"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_sub2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/fab_main"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginRight="20dp"
-        android:backgroundTint="#ffffff"
-        android:src="@drawable/ic_album"
-        android:visibility="invisible"
-        app:borderWidth="0dp"
-        app:fabSize="normal" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:backgroundTint="#FFFFF0"
-        android:clickable="true"
-        android:layout_gravity="right|bottom"
-        app:srcCompat="@drawable/ic_add"
-        app:borderWidth="0dp"
-        app:fabSize="normal" />
-</RelativeLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_sub1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fab_sub2"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="#ffffff"
+            android:src="@drawable/ic_camera"
+            android:visibility="invisible"
+            app:borderWidth="0dp"
+            app:fabSize="normal" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_sub2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fab_main"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="#ffffff"
+            android:src="@drawable/ic_album"
+            android:visibility="invisible"
+            app:borderWidth="0dp"
+            app:fabSize="normal" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="#FFFFF0"
+            android:clickable="true"
+            android:layout_gravity="right|bottom"
+            app:srcCompat="@drawable/ic_add"
+            app:borderWidth="0dp"
+            app:fabSize="normal" />
+
+    </RelativeLayout>
+
+</FrameLayout>
