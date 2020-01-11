@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -103,25 +104,32 @@ public class SignupActivity extends AppCompatActivity {
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nickname = name_text.getText().toString();
-                email = email_text.getText().toString();
-                age = Integer.parseInt(age_text.getText().toString());
+                if (!TextUtils.isEmpty(name_text.getText())
+                        && !TextUtils.isEmpty(email_text.getText())
+                        && !TextUtils.isEmpty(age_text.getText())) {
+                    nickname = name_text.getText().toString();
+                    email = email_text.getText().toString();
+                    age = Integer.parseInt(age_text.getText().toString());
 
-                JSONObject jsonObject = new JSONObject();
-                JSONArray jsonArray = new JSONArray();
-                try {
-                    jsonObject.put("id", user_id);
-                    jsonObject.put("nickname", nickname);
-                    jsonObject.put("email", email);
-                    jsonObject.put("age", age);
-                    jsonObject.put("is_male", is_male);
-                    if (img != null)
-                        jsonObject.put("profile_img", bitmap2ByteArray(img));
-                    jsonArray.put(jsonObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    JSONObject jsonObject = new JSONObject();
+                    JSONArray jsonArray = new JSONArray();
+                    try {
+                        jsonObject.put("id", user_id);
+                        jsonObject.put("nickname", nickname);
+                        jsonObject.put("email", email);
+                        jsonObject.put("age", age);
+                        jsonObject.put("is_male", is_male);
+                        if (img != null)
+                            jsonObject.put("profile_img", bitmap2ByteArray(img));
+                        jsonArray.put(jsonObject);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    new JSONTask(jsonArray).execute("signed_up");
                 }
-                new JSONTask(jsonArray).execute("signed_up");
+                else {
+                    Toast.makeText(SignupActivity.this, "모두 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

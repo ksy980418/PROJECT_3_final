@@ -1,32 +1,14 @@
 package com.example.project_3;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
-import com.kakao.network.ErrorResult;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.LogoutResponseCallback;
-import com.kakao.usermgmt.callback.MeV2ResponseCallback;
-import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
-import com.kakao.util.helper.log.Logger;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.kakao.util.helper.Utility.getPackageInfo;
 
 public class MainActivity extends AppCompatActivity {
 
