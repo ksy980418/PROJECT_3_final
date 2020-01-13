@@ -3,6 +3,8 @@ package com.example.project_3;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Base64;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,12 +19,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class JSONTask extends AsyncTask<String, String ,String > {
     private JSONArray jsonArray;
-    private final String server = "http://192.168.0.78:80/";
+    private final String server = "http://192.168.0.78:3000/";
     private String process;
 
     public JSONTask(JSONArray _jsonArray) {
@@ -48,9 +48,15 @@ public class JSONTask extends AsyncTask<String, String ,String > {
                 con.setDoInput(true);
                 con.connect();
 
+                String s = jsonArray.toString();
+                int len = s.length();
+
                 OutputStream outStream = con.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-                writer.write(jsonArray.toString());
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream), len);
+
+                Log.e("data", s);
+                System.out.println(len);
+                writer.write(s);
                 writer.flush();
                 writer.close();
 
@@ -123,7 +129,7 @@ public class JSONTask extends AsyncTask<String, String ,String > {
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         try {
-                            clothes c = new clothes(byteArray2Bitmap((byte [])jsonArray.getJSONObject(i).get("_cloth_image"))
+                            clothes c = new clothes(getBitmapFromString(jsonArray.getJSONObject(i).getString("_cloth_image"))
                                     , jsonArray.getJSONObject(i).getString("_group1")
                                     , jsonArray.getJSONObject(i).getString("_group2"));
                             Main2Activity.clothes_list.add(c);
@@ -143,7 +149,7 @@ public class JSONTask extends AsyncTask<String, String ,String > {
                     if (json3.getBoolean("result")) {
                         JSONObject json4 = json3.getJSONObject("image");
 
-                        clothes c = new clothes(byteArray2Bitmap((byte [])json4.get("_cloth_image"))
+                        clothes c = new clothes(getBitmapFromString(json4.getString("_cloth_image"))
                                 , json4.getString("_group1")
                                 , json4.getString("_group2"));
 
@@ -157,4 +163,9 @@ public class JSONTask extends AsyncTask<String, String ,String > {
     }
 
     private Bitmap byteArray2Bitmap(byte[] bytes) {return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);}
+
+    private Bitmap getBitmapFromString(String stringPicture) {
+        byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    }
 }

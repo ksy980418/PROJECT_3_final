@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -127,7 +128,7 @@ public class SignupActivity extends AppCompatActivity {
                         jsonObject.put("age", age);
                         jsonObject.put("is_male", is_male);
                         if (img != null)
-                            jsonObject.put("profile_img", bitmap2ByteArray(img));
+                            jsonObject.put("profile_img", getStringFromBitmap(img));
                         jsonArray.put(jsonObject);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -241,6 +242,13 @@ public class SignupActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] bytes = stream.toByteArray();
         return bytes;
+    }
+
+    private String getStringFromBitmap(Bitmap bitmapPicture) {
+        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+        bitmapPicture.compress(Bitmap.CompressFormat.PNG, 1, byteArrayBitmapStream);
+        byte[] b = byteArrayBitmapStream.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
     private void redirectLoginActivity() {

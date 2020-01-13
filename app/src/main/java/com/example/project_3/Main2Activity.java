@@ -109,6 +109,11 @@ public class Main2Activity extends AppCompatActivity {
                 Toast.makeText(this, "We need your permission for reading your gallery.", Toast.LENGTH_SHORT).show();
             permissions.add(Manifest.permission.CAMERA);
         }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                Toast.makeText(this, "We need your permission for reading your gallery.", Toast.LENGTH_SHORT).show();
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
         if (permissions.size() > 0) {
             String[] per_array = new String[permissions.size()];
             per_array = permissions.toArray(per_array);
@@ -144,16 +149,22 @@ public class Main2Activity extends AppCompatActivity {
             if (grantResults.length == 1
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 do_work();
-            }else if (grantResults.length == 2
+            } else if (grantResults.length == 2
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 do_work();
-            }else if (grantResults.length == 3
+            } else if (grantResults.length == 3
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED
                     && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 do_work();
-            }else
+            } else if (grantResults.length == 4
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[2] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
+                do_work();
+            } else
                 finish();
         }
     }
