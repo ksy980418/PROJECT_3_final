@@ -142,22 +142,7 @@ public class JSONTask extends AsyncTask<String, String ,String > {
                 }
                 break;
             case "add_cloth" :
-                JSONObject json3;
-                try {
-                    json3 = new JSONObject(result);
 
-                    if (json3.getBoolean("result")) {
-                        JSONObject json4 = json3.getJSONObject("image");
-
-                        clothes c = new clothes(getBitmapFromString(json4.getString("_cloth_image"))
-                                , json4.getString("_group1")
-                                , json4.getString("_group2"));
-
-                        Main2Activity.clothes_list.add(c);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 break;
         }
     }
