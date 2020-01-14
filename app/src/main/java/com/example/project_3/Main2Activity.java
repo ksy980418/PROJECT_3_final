@@ -175,10 +175,10 @@ public class Main2Activity extends AppCompatActivity {
         try {
             jsonObject.put("id", SignupActivity.user_id);
             jsonArray.put(jsonObject);
+            new JSONTask(jsonArray).execute("get_clothes");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        new JSONTask(jsonArray).execute("get_clothes");
 
         locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 

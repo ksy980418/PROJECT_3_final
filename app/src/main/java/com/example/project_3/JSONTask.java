@@ -129,7 +129,7 @@ public class JSONTask extends AsyncTask<String, String ,String > {
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         try {
-                            clothes c = new clothes(getBitmapFromString(jsonArray.getJSONObject(i).getString("_cloth_image"))
+                            clothes c = new clothes(jsonArray.getJSONObject(i).getString("_cloth_new")
                                     , jsonArray.getJSONObject(i).getString("_group1")
                                     , jsonArray.getJSONObject(i).getString("_group2"));
                             Main2Activity.clothes_list.add(c);
@@ -145,12 +145,5 @@ public class JSONTask extends AsyncTask<String, String ,String > {
 
                 break;
         }
-    }
-
-    private Bitmap byteArray2Bitmap(byte[] bytes) {return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);}
-
-    private Bitmap getBitmapFromString(String stringPicture) {
-        byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 }

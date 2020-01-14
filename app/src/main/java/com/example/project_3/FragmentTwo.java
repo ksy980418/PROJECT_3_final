@@ -51,9 +51,9 @@ public class FragmentTwo extends Fragment {
     private boolean isFabOpen = false;
 
     static Bitmap mBitmap;
-    private static File curfile;
+    static File curfile;
 
-    ApiService apiService;
+    private ApiService apiService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
