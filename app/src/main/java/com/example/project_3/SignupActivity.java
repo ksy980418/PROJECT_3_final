@@ -3,13 +3,10 @@ package com.example.project_3;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Base64;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +33,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -115,6 +111,7 @@ public class SignupActivity extends AppCompatActivity {
                         && !TextUtils.isEmpty(email_text.getText())
                         && !TextUtils.isEmpty(age_text.getText())
                         && (male.isChecked() || female.isChecked())) {
+
                     nickname = name_text.getText().toString();
                     email = email_text.getText().toString();
                     age = Integer.parseInt(age_text.getText().toString());
@@ -127,13 +124,11 @@ public class SignupActivity extends AppCompatActivity {
                         jsonObject.put("email", email);
                         jsonObject.put("age", age);
                         jsonObject.put("is_male", is_male);
-                        if (img != null)
-                            jsonObject.put("profile_img", getStringFromBitmap(img));
                         jsonArray.put(jsonObject);
+                        new JSONTask(jsonArray).execute("signed_up");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    new JSONTask(jsonArray).execute("signed_up");
                 }
                 else {
                     Toast.makeText(SignupActivity.this, "모두 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -235,20 +230,6 @@ public class SignupActivity extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
-    }
-
-    private byte[] bitmap2ByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] bytes = stream.toByteArray();
-        return bytes;
-    }
-
-    private String getStringFromBitmap(Bitmap bitmapPicture) {
-        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-        bitmapPicture.compress(Bitmap.CompressFormat.PNG, 1, byteArrayBitmapStream);
-        byte[] b = byteArrayBitmapStream.toByteArray();
-        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
     private void redirectLoginActivity() {
